@@ -104,7 +104,7 @@ public class SearchRepository {
                     }
                     query.append(BRACKET);
 
-                    List<Integer> listId = SpringJdbcConfig.listId(query.toString());
+                    List<Integer> listId = SpringJdbcConfig.pageId(query.toString());
                     ArrayList<Integer> newList = new ArrayList<>();
 
                     for (Integer id : listId) {

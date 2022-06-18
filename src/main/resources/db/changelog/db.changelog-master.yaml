@@ -1,0 +1,179 @@
+--preconditions onFail:HALT onError: HALT
+--precondition-sql-check expectedResult: 0 SELECT COUNT(*) FROM rustemgk_sb
+
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-createTables.yaml
+  - changeSet:
+      id: 1
+      author: admin
+      changes:
+        - createTable:
+            tableName: fields
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: selector
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: FLOAT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: pages
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: path
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: MEDIUMTEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: site_id
+                  type: INT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: lemmas
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: lemma
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: frequency
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: site_id
+                  type: INT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: index
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: page_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lemma_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rank
+                  type: FLOAT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+        - createTable:
+            tableName: site
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: ENUM('INDEXING', 'INDEXED', 'FAILED')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_time
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_error
+                  type: TEXT
+              - column:
+                  name: url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: admin
+      comment: "Добавить значения в таблицу fields"
+      changes:
+        - insert:
+            tableName: fields
+            columns:
+              - column:
+                  name: name
+                  value: "title"
+              - column:
+                  name: selector
+                  value: "title"
+              - column:
+                  name: weight
+                  value: 1.0
+        - insert:
+            tableName: fields
+            columns:
+              - column:
+                  name: name
+                  value: "body"
+              - column:
+                  name: selector
+                  value: "body"
+              - column:
+                  name: weight
+                  value: 0.8
